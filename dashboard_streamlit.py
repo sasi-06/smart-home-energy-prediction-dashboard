@@ -10,6 +10,7 @@ import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 import seaborn as sns
+from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler, LabelEncoder
 from sklearn.ensemble import RandomForestRegressor, GradientBoostingRegressor
 from sklearn.linear_model import LinearRegression
@@ -298,10 +299,12 @@ with tab4:
 
     # Actual vs Predicted
     fig = make_subplots(rows=1, cols=2, subplot_titles=('Actual vs Predicted', 'Residuals'))
-    fig.add_trace(go.Scatter(x=y_test, y=y_pred, mode='markers', alpha=0.1), row=1, col=1)
+    fig.add_trace(go.Scatter(x=y_test, y=y_pred, mode='markers',
+                             marker=dict(opacity=0.1)), row=1, col=1)
     fig.add_trace(go.Scatter(x=[y_test.min(), y_test.max()], y=[y_test.min(), y_test.max()],
                               mode='lines', line=dict(color='red', dash='dash')), row=1, col=1)
-    fig.add_trace(go.Scatter(x=y_pred, y=y_test.values - y_pred, mode='markers', alpha=0.1), row=1, col=2)
+    fig.add_trace(go.Scatter(x=y_pred, y=y_test.values - y_pred, mode='markers',
+                             marker=dict(opacity=0.1)), row=1, col=2)
     fig.add_hline(y=0, line_dash='dash', line_color='red', row=1, col=2)
     fig.update_layout(title="Model Performance")
     st.plotly_chart(fig, use_container_width=True)
