@@ -225,10 +225,18 @@ with tab3:
     with col2:
         # Monthly pattern
         monthly = filtered_df.groupby('Month')['Energy Consumption (kWh)'].agg(['mean', 'std']).reset_index()
-        months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
+        month_names = {
+            1: 'Jan', 2: 'Feb', 3: 'Mar', 4: 'Apr', 5: 'May', 6: 'Jun',
+            7: 'Jul', 8: 'Aug', 9: 'Sep', 10: 'Oct', 11: 'Nov', 12: 'Dec'
+        }
+        monthly['MonthName'] = monthly['Month'].map(month_names)
         fig = go.Figure()
-        fig.add_trace(go.Bar(x=months, y=monthly['mean'], marker_color=monthly['mean'],
-                              error_y=monthly['std']))
+        fig.add_trace(go.Bar(
+            x=monthly['MonthName'],
+            y=monthly['mean'],
+            marker_color=monthly['mean'],
+            error_y=dict(type='data', array=monthly['std'].fillna(0).to_numpy())
+        ))
         fig.update_layout(title="Monthly Energy Consumption Pattern", showlegend=False)
         st.plotly_chart(fig, use_container_width=True)
 
