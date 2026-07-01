@@ -40,7 +40,8 @@ export default function Predictor() {
     setLoading(true);
     setError(null);
     try {
-      const res = await axios.post('http://localhost:8000/api/predict', formData);
+      const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:8000';
+      const res = await axios.post(`${apiUrl}/api/predict`, formData);
       setResult(res.data);
       // Save to localStorage for Bill Calculator
       localStorage.setItem('ml_predictions', JSON.stringify(res.data.predictions));
